@@ -2000,10 +2000,10 @@ let input = `104
 7759`
 
 input = input.split('\n')
+input = input.map( (num) => Number(num))
 
 const dayOne = () => {
   let increases = 0;
-  input = input.map( (num) => Number(num))
   input.map( (num, i) => {
     if( i === 0 ) return;
     if(num < input[i + 1]){
@@ -2018,5 +2018,13 @@ dayOne()
 
 const dayTwo = () => {
   let increases = 0;  
+  let prevSum = undefined;
+  input.map( (num, i) => {
+    let sum = num + input[i + 1] + input[i + 2]
+    if(prevSum === undefined){
+      prevSum = sum;
+      return;
+    }
+  })
 }
 
