@@ -2025,6 +2025,14 @@ const dayTwo = () => {
       prevSum = sum;
       return;
     }
+    if(prevSum < sum) {
+      increases++;
+    }
+    if(i == input.length - 4)
+    prevSum = sum;
   })
+  console.log(increases);
 }
+
+dayTwo();
 
