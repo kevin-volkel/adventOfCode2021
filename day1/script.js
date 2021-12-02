@@ -2004,13 +2004,11 @@ input = input.map( (num) => Number(num))
 
 const dayOne = () => {
   let increases = 0;
-  input.map( (num, i) => {
-    if( i === 0 ) return;
-    if(num < input[i + 1]){
-      increases++;
-    }
-    prevNum = num;
-  })
+  let prevNum = Infinity;
+  for(let i = 0; i <= input.length - 1; i++) {
+    increases += (input[i] > prevNum) ? 1 : 0;
+    prevNum = input[i]
+  }
   console.log(increases);
 }
 
@@ -2018,21 +2016,14 @@ dayOne()
 
 const dayTwo = () => {
   let increases = 0;  
-  let prevSum = undefined;
-  input.map( (num, i) => {
-    let sum = num + input[i + 1] + input[i + 2]
-    if(prevSum === undefined){
-      prevSum = sum;
-      return;
-    }
-    if(prevSum < sum) {
-      increases++;
-    }
-    if(i == input.length - 4)
-    prevSum = sum;
-  })
+  let prevSum = Infinity;
+  for(let i = 0; i <= input.length - 3; i++){
+    let newSum = input[i] + input[i + 1] + input[i + 2]
+    increases += (newSum > prevSum) ? 1 : 0;
+    prevSum = newSum;
+  }
   console.log(increases);
-}
+} //1608
 
 dayTwo();
 
