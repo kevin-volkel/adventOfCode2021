@@ -618,19 +618,18 @@ for(row in input) {
 boards = boards.map( (board) => {
   return board.map( row => row.split(' ').filter( item => item !== ''))
 })
-// console.log(boards);
 
 
 let testBoard = [
-  [' 1', ' 2', ' 3', ' 4', ' 5'],
+  [' 1', '2', ' 3', ' 4', ' 5'],
   ['11', '12', '13', '14', '15'],
   ['21', '22', '23', '24', '25'],
   ['31', '32', '33', '34', '35'],
-  ['41', '33', '44', '44', '45'],
+  ['41', '42', '44', '44', '45'],
 ]
 
-const checkForWin = (board, i) => {
 
+const checkForWin = (board, i) => {
   //* Vertical Check
   for(let col = 0; col < 5; col++){
     let vSuccess = true;
@@ -638,21 +637,21 @@ const checkForWin = (board, i) => {
       if(board[row][col] !== 'x') vSuccess = false;
     }
     if(vSuccess){
-      return {type: 'vertical', col, board: boards[i]}
+      return {type: 'vertical', col, board}
     }
   }
-
+  
   //* Horizontal Check
   for(let row = 0; row < 5; row++){
-    let hSuccess = true;
-    for(let col = 0; col < 5; col++){
-      if(board[row][col] !== 'x') hSuccess = false;
-    }
+    hSuccess = false;
+    let newRow = board[row].filter( (digit) => digit == 'x')
+    if(newRow.length === 5) hSuccess = true;
     if(hSuccess){
-      return {type: 'horizontal', row, board: boards[i]}
+      return {type: 'horizontal', row, board}
     }
   }
 }
+
 
 
 const starOne = () => {
@@ -660,9 +659,12 @@ const starOne = () => {
   let complete = false;
   let solution = '';
   let lastNum = '';
+  
+  //* Find the winning board
   for(num of order){
     if(complete) break;
     copyBoards = copyBoards.map( (board, i) => {
+      if(complete) return board;
       
       for(let row = 0; row < 5; row++){
         for(let col = 0; col < 5; col++){
@@ -670,28 +672,69 @@ const starOne = () => {
         }
       }
       
+      
       win = checkForWin(board, i)
-      if(win !== undefined) [complete, solution, lastNum] = [true, win, num];
+      if(win !== undefined) {
+        complete = true;
+        solution = win;
+        lastNum = num;
+      }
       return board;
     })
   }
-
-
+  
+  
   let answer = 0;
-  if(solution.type == 'vertical'){
-    for(let row = 0; row < 5; row++){
-      answer += Number(solution.board[row][solution.col])
+  for(row in solution.board){
+    for(col in solution.board[row]){
+      if(solution.board[row][col] !== 'x') answer += Number(solution.board[row][col])
     }
-    return console.log(answer * lastNum)
   }
-  if(solution.type == 'horizontal'){
-    answer = solution.board.reduce( (total, num) => total + Number(num))
-    return console.log(answer * lastNum)
-  }
+  return console.log(answer * lastNum);
 }
 
 const starTwo = () => {
-
+  let copyBoards = JSON.parse(JSON.stringify(boards));
+  let complete = false;
+  let lose = '';
+  let lastNum = '';
+  
+  //* Find the losing board
+  for(num of order){
+    if(complete) break;
+    copyBoards = copyBoards.map( (board, i) => {
+      for(let row = 0; row < 5; row++){
+        for(let col = 0; col < 5; col++){
+          if(board[row][col] === num) board[row][col] = 'x'
+        }
+      }
+      
+      
+      win = checkForWin(board, i)
+      if(win !== undefined) {
+        if(copyBoards.length === 1){
+          complete = true;
+          lose = copyBoards[0]
+          lastNum = num;
+          return 'won';
+        }
+        return 'won';
+      }
+      return board;
+    })
+    copyBoards = copyBoards.filter( (board) => board !== 'won')
+  }
+  
+  console.log(lose, lastNum);
+  let answer = 0;
+  for(row in lose){
+    for(col in lose[row]){
+      if(lose[row][col] !== 'x') answer += Number(lose[row][col])
+      console.log(lose);
+    }
+  }
+  
+  return console.log(answer * lastNum);
 }
 
 starOne();
