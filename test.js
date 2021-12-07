@@ -3,4 +3,6 @@ let obj = {
   2: '5'
 }
 
-const newObj = JSON.parse(JSON.stringify())
+const newObj = JSON.parse(JSON.stringify(obj))
+
+console.log(newObj);

@@ -1,14 +1,15 @@
 let input = `1,2,1,1,1,1,1,1,2,1,3,1,1,1,1,3,1,1,1,5,1,1,1,4,5,1,1,1,3,4,1,1,1,1,1,1,1,5,1,4,1,1,1,1,1,1,1,5,1,3,1,3,1,1,1,5,1,1,1,1,1,5,4,1,2,4,4,1,1,1,1,1,5,1,1,1,1,1,5,4,3,1,1,1,1,1,1,1,5,1,3,1,4,1,1,3,1,1,1,1,1,1,2,1,4,1,3,1,1,1,1,1,5,1,1,1,2,1,1,1,1,2,1,1,1,1,4,1,3,1,1,1,1,1,1,1,1,5,1,1,4,1,1,1,1,1,3,1,3,3,1,1,1,2,1,1,1,1,1,1,1,1,1,5,1,1,1,1,5,1,1,1,1,2,1,1,1,4,1,1,1,2,3,1,1,1,1,1,1,1,1,2,1,1,1,2,3,1,2,1,1,5,4,1,1,2,1,1,1,3,1,4,1,1,1,1,3,1,2,5,1,1,1,5,1,1,1,1,1,4,1,1,4,1,1,1,2,2,2,2,4,3,1,1,3,1,1,1,1,1,1,2,2,1,1,4,2,1,4,1,1,1,1,1,5,1,1,4,2,1,1,2,5,4,2,1,1,1,1,4,2,3,5,2,1,5,1,3,1,1,5,1,1,4,5,1,1,1,1,4`;
 let obj = {
-  0: 0,
-  1: 0,
-  2: 0,
-  3: 0,
-  4: 0,
-  5: 0,
-  6: 0,
-  7: 0,
-  8: 0,
+  '-1': 0,
+  '0': 0,
+  '1': 0,
+  '2': 0,
+  '3': 0,
+  '4': 0,
+  '5': 0,
+  '6': 0,
+  '7': 0,
+  '8': 0,
 };
 
 input = input.split(',');
@@ -42,44 +43,30 @@ const starOne = () => {
 };
 
 const starTwo = () => {
-  // let copyInput = JSON.parse(JSON.stringify(input));
-
-  // populateObj(copyInput)
-  // console.log(obj);
-
-  // for (let i = 0; i < 256; i++) {
-  //   console.log(i);
-  //   let newObj = {};
-  //   for(num of Object.keys(obj)){
-  //     newObj[num - 1] = obj[num]
-  //   }
-  //   if(newObj[-1]){
-  //     newObj[6] = newObj[-1]
-  //     newObj[8] = newObj[-1]
-  //     newObj[-1] = 0;
-  //   }
-  //   obj = JSON.parse(JSON.stringify(newObj))
-  // }
-  
-  // console.log(obj);
 
   let copyInput = JSON.parse(JSON.stringify(input));
 
   populateObj(copyInput)
   const newObj = {}
-  for (let i = 0; i < 2; i++) {
-    for(let i = 0; i <= 8; i++){
-      newObj[i] = obj[Number(i) + 1]
+  for (let i = 0; i < 256; i++) {
+    for(let i = 0; i < 9; i++){
+      newObj[i - 1] = obj[i]
     }
-    if(newObj[-1]){
-      newObj[8] = newObj[-1]
-      newObj[6] = newObj[-1]
+    if(newObj[-1] > 0){
+      let newFish = newObj[-1]
+      newObj[-1] = 0;
+      newObj[8] = newFish;
+      newObj[6] += newFish
+    } else {
+      newObj[8] = 0;
     }
-    console.log(newObj);
-    obj = JSON.parse(JSON.stringify(input))
+    obj = JSON.parse(JSON.stringify(newObj))
   }
 
-  console.log(copyInput.length);
+  console.log(obj);
+
+  let total = Object.values(obj).reduce( (total, curr) => total + curr)
+  console.log(total);
 };
 
 starOne();
