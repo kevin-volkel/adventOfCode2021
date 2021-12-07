@@ -2017,13 +2017,13 @@ dayOne()
 const dayTwo = () => {
   let increases = 0;  
   let prevSum = Infinity;
-  for(let i = 0; i <= input.length - 3; i++){
+  for(let i = 0; i <= input.length; i++){
     let newSum = input[i] + input[i + 1] + input[i + 2]
     increases += (newSum > prevSum) ? 1 : 0;
     prevSum = newSum;
   }
   console.log(increases);
-} //1608
+} 
 
 dayTwo();
 
