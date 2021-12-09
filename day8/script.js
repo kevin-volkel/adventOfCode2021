@@ -198,23 +198,6 @@ gcafb dc gecd fecbgda cfdbg dfebgc cdf fbegd dcfbea fgedab | edfcbg dgbcf cd dcf
 badf fcagd agcefb dfgcab ba dcbeg cedabgf abgdc acegfd abg | ebfagc dfab ab fcbdeag
 cfgbad gdbfe fe efgdacb cbdge dabgfe egdcaf befa bdgfa egf | decagfb eabf baef fe
 dbfea bcaefdg dcfgeb ag bfceag egfcda becfg fgeba gcab ega | agbfecd aedfcgb gcba ga`;
-<<<<<<< HEAD
-input = input.split('\n')
-let outputs = [];
-let inputs = [];
-for(row of input){
-  let dividedRow = row.split(' | ');
-  inputs.push(dividedRow[0].split(' '))
-  outputs.push(dividedRow[1].split(' '))
-}
-
-const starOne = () => {
-
-}
-
-const starTwo = () => {
-
-=======
 
 input = input.split('\n')
 let inputs = [];
@@ -359,7 +342,6 @@ const starTwo = () => {
   solutions = solutions.map( (code) => Number(code.join(''))).reduce( (total, curr) => total + curr)
 
   return console.log(solutions);
->>>>>>> 3f42ee00c81028d6588fe4fcdc87de992eea4ec5
 }
 
 starOne();
