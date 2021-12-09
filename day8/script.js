@@ -198,6 +198,7 @@ gcafb dc gecd fecbgda cfdbg dfebgc cdf fbegd dcfbea fgedab | edfcbg dgbcf cd dcf
 badf fcagd agcefb dfgcab ba dcbeg cedabgf abgdc acegfd abg | ebfagc dfab ab fcbdeag
 cfgbad gdbfe fe efgdacb cbdge dabgfe egdcaf befa bdgfa egf | decagfb eabf baef fe
 dbfea bcaefdg dcfgeb ag bfceag egfcda becfg fgeba gcab ega | agbfecd aedfcgb gcba ga`;
+<<<<<<< HEAD
 input = input.split('\n')
 let outputs = [];
 let inputs = [];
@@ -213,6 +214,152 @@ const starOne = () => {
 
 const starTwo = () => {
 
+=======
+
+input = input.split('\n')
+let inputs = [];
+let outputs = [];
+input = input.map( (line) => line.split(' | '))
+
+const alphabetize = (str) => {
+  return str.split('').sort().join('')
+}
+
+
+const starOne = () => {
+  let total = 0;
+  outputs = input.map( (row) => row[1].split(' '))
+  outputs.map( (row) => {
+    row.map( (number) => {
+      if(number.length == 2 || number.length == 4 || number.length == 3 || number.length == 7) total++;
+    })
+  })
+  return console.log(total);
+}
+
+const starTwo = () => {
+  let solutions = input.map( (row) => {
+    let [input, output] = row;
+    input = input.split(' ').map( (code) => alphabetize(code))
+    output = output.split(' ').map( (code) => alphabetize(code))
+    const obj = {
+      nums: {
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: '',
+        9: '',
+        0: '',
+      },
+      parts: {
+        top: '',
+        bottom: '',
+        tl: '',
+        tr: '',
+        bl: '',
+        br: '',
+        mid: ''
+      }
+    }
+    //! 1) find 1, 4, 7, and 8 based on letter count
+    for(code of input){
+      switch(code.length){
+        case 2:
+          obj.nums[1] = code
+          break;
+        case 3:
+          obj.nums[7] = code
+          break;
+        case 4:
+          obj.nums[4] = code
+          break;
+        case 7:
+          obj.nums[8] = code
+          break;
+        default:
+          break;
+      }
+    }
+
+    //! 2) Find top using 7 - 1
+    obj['nums'][7].split('').map( (letter) => {
+      if(!obj['nums'][1].includes(letter)) obj['parts']['top'] = letter;
+    })
+
+    //! 3) Find bl, br, and tl by number of appearances
+    let letterCounter = {};
+    for(code of input){
+      code.split('').map( (letter) => {
+        if(letterCounter[letter]) {
+          letterCounter[letter]++;
+        } else {
+          letterCounter[letter] = 1;
+        }
+      })
+    }
+    for(entry of Object.entries(letterCounter)){
+      switch(entry[1]){
+        case 4:
+          obj['parts']['bl'] = entry[0]
+          break;
+        case 6:
+          obj['parts']['tl'] = entry[0]
+          break;
+        case 9:
+          obj['parts']['br'] = entry[0]
+          break;
+        default:
+          break;
+      }
+    }
+
+    //! 4) Find tr from other half of 1
+    obj['parts']['tr']  = obj['nums'][1].split('').filter( (letter) => letter !== obj['parts']['br']).join('')
+
+    //! 5) Use 4 to find middle
+    obj['parts']['mid'] = obj['nums'][4].split('').filter( (letter) => {
+      return letter !== obj['parts']['br'] && letter !== obj['parts']['tr'] && letter !== obj['parts']['tl']
+    }).join('')
+
+    //! 6) Process of elimination to find bottom
+    obj['parts']['bottom'] = obj['nums'][8].split('').filter( (letter) => !Object.values(obj['parts']).includes(letter)).join('')
+
+    const {top, bottom, tl, tr, bl, br, mid} = obj['parts']
+
+    const key = {
+      1: obj['nums'][1],
+      2: alphabetize(top + tr + mid + bl + bottom),
+      3: alphabetize(top + tr + mid + br + bottom),
+      4: obj['nums'][4],
+      5: alphabetize(top + tl + mid + br + bottom),
+      6: alphabetize(top + tl + mid + br + bl + bottom),
+      7: obj['nums'][7],
+      8: obj['nums'][8],
+      9: alphabetize(top + tr + tl + mid + br + bottom),
+      0: alphabetize(top + tr + tl + br + bl + bottom),
+    }
+
+    let decodedOut = [];
+    for(code of output){
+      for(entry of Object.entries(key)){
+        if(code === entry[1]){
+          decodedOut.push(entry[0])
+          break;
+        }
+      }
+    }
+
+    return decodedOut;
+  })
+
+  solutions = solutions.map( (code) => Number(code.join(''))).reduce( (total, curr) => total + curr)
+
+  return console.log(solutions);
+>>>>>>> 3f42ee00c81028d6588fe4fcdc87de992eea4ec5
 }
 
 starOne();
