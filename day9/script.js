@@ -171,15 +171,23 @@ const dayTwo = () => {
     return findArea(input, row, col);
   });
 
-  let maxes = [0, 0, 0];
-  for(area of areas) {
-    for(max in maxes){
-      if(area > maxes[max]){
-        maxes[max] = area;
-        break;
-      }
+  let maxes = [0, 0, 0]
+  for(max in maxes) {
+    let greatest = 0;
+    for(num in areas) {
+      if(areas[num] > greatest) greatest = areas[num]
     }
+    maxes[max] = greatest;
+    let found = false;
+    areas = areas.filter( (num) => {
+      if(num == greatest && !found) {
+        found = true;
+        return false;
+      }
+      return true
+    })
   }
+  console.log(maxes);
 
   return console.log(maxes.reduce( (total, curr) => total * curr));
 };
