@@ -120,21 +120,33 @@ const findArea = (arr, row, col) => {
   let queue = [];
   queue.push(`${row}|${col}`)
   let visited = {};
-  visited[`${row}|${col}`] = true;
 
   while(queue.length > 0) {
-    let [row, col] = queue.shift().split('|')
-    if (arr[row][col] && !visited[`${row}|${col}`]) {
-      visited[i] = true;
-      queue.push(i);
-
-      // Visit it, set the distance and add it to the queue
-      if (col > 0) 
-      if (row > 0) 
-      if (col < arr[row].length - 1)
-      if (row < arr.length - 1)
+    for(coord in queue){
+      let [row, col] = queue.shift().split('|')
+      row = Number(row)
+      col = Number(col)
+      if (arr[row][col] && !visited[`${row}|${col}`]) {
+        visited[`${row}|${col}`] = true;
+        // Visit it, set the distance and add it to the queue
+        if (col > 0) {
+          if(input[row][col - 1] !== 9 && !visited[`${row}|${col - 1}`] && !queue.includes(input[row][col - 1])) queue.push(`${row}|${col - 1}`) 
+        }
+        if (row > 0) {
+          if(input[row - 1][col] !== 9 && !visited[`${row - 1}|${col}`] && !queue.includes(input[row - 1][col])) queue.push(`${row - 1}|${col}`) 
+        }
+        if (col < arr[row].length - 1) {
+          if(input[row][col + 1] !== 9 && !visited[`${row}|${col + 1}`] && !queue.includes(input[row][col + 1])) queue.push(`${row}|${col + 1}`) 
+        }
+        if (row < arr.length - 1) {
+          if(input[row + 1][col] !== 9 && !visited[`${row + 1}|${col}`] && !queue.includes(input[row + 1][col])) queue.push(`${row + 1}|${col}`) 
+        }
+        console.log(queue);
+      }
     }
   }
+
+  return Object.entries(visited).length
 }
 
 const dayOne = () => {
@@ -156,28 +168,11 @@ const dayTwo = () => {
       if (isLowest(input, Number(row), Number(col))) lowPoints.push([row, col]);
     }
   }
-  console.log(lowPoints);
-  lowPoints = lowPoints.map((lowPoint, i) => {
-    let area = 0;
-    let checked = [];
-    let [row, col] = lowPoint;
-    let searching = true;
-    while (searching) {
-      searching = false;
-      if (col < arr[row].length - 1) {
-      }
-      if (col > 0)
-        if (arr[row][col - 1] <= currNum) {
-        }
-      if (row > 0)
-        if (arr[row - 1][col] <= currNum) {
-        }
-      if (row < arr.length - 1) {
-      }
-    }
-    return area;
-  });
-  console.log(lowPoints);
+  // let areas = lowPoints.map((lowPoint, i) => {
+  //   let [row, col] = lowPoint;
+  //   return findArea(input, row, col);
+  // });
+  console.log(findArea(input, 0, 1));
 };
 
 dayOne();
