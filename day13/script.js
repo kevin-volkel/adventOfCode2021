@@ -49,9 +49,13 @@ const dayOne = () => {
     if(dir == 'x') {
       console.log(grid);
       for(let i = 0; i <= Math.max(...Object.keys(grid)); i++){
-        for(col in grid[i]){
+        if(!grid[i]) continue;
+        console.log(grid[i]);
+        let tempArr = grid[i]
+        for(let col = 0; col < tempArr.length; i++){
+          grid[i] = grid[i].sort( (a, b) => a - b)
           if(grid[i][col] < num) continue;
-          console.log(grid[2]);
+          console.log(grid[2][col]);
           let newCol = (2 * num) - grid[i][col];
           grid[i][col] = false;
           grid[i].push(String(newCol))
