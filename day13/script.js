@@ -1018,6 +1018,7 @@ points = points.split('\n')
 folds = folds.split('\n')
 
 const dayOne = () => {
+  let fold = folds[0]
   let grid = {};
   points.map( (point) => {
     let [col, row] = point.split(',')
