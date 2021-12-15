@@ -56,16 +56,41 @@ const dayOne = () => {
   copyInput = copyInput.filter( (path) => !path.includes('start'))
 
   let searching = true;
-  while(searching) {
+  // while(searching) {
+  for(let i = 0; i < 20; i++){
     let copyPaths = Array.from(paths)
     //! look at paths, change copyPaths
     for(path in paths) {
-      let nextStep = paths[path][1]
+      if(paths[path][-1] == 'end') continue;
+      let nextStep = paths[path][paths[path].length - 1]
       let changed = false;
-      copyInput.map( (dir) => {
+      copyInput.map( (dir, i) => {
+        if(dir.includes(nextStep) && changed){
+          let newStep = (dir[0] == nextStep) ? dir[1] : dir[0]
+          if(copyPaths.includes([...copyPaths[path], newStep])) return;
+          if(newStep.toUpperCase() == newStep){
+            if(!paths[path].includes(newStep)){
+              copyPaths.push([...copyPaths[path], newStep])
+              changed = true;
+            }
+          } else {
+            copyPaths.push([...copyPaths[path], newStep])
+            changed = true;
+          }
+          nextStep = paths[path][paths[path].length - 1]
+        }
         if(dir.includes(nextStep) && !changed){
-          copyPaths[path].push( (dir[0] == nextStep) ? dir[1] : dir[0])
-          changed = true;
+          let newStep = (dir[0] == nextStep) ? dir[1] : dir[0]
+          if(newStep.toUpperCase() == newStep){
+            if(!paths[path].includes(newStep)){
+              copyPaths[path].push(newStep)
+              changed = true;
+            }
+          } else {
+            copyPaths[path].push(newStep)
+            changed = true;
+          }
+          nextStep = paths[path][paths[path].length - 1]
         }
       })
       console.log(copyPaths);
