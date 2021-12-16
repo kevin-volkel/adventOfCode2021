@@ -32,14 +32,11 @@ A-end
 b-end`
 input = input.split('\n').map( (dir) => dir.split('-'))
 
-const isEnded = (arr) => {
-  let ended = false;
-  arr.map( (item) => {
-    if(item[-1] !== 'end'){
-      ended = true;
-    }
-  })
-  return ended;
+const isArrIncluded = (testArr, mainArr) => {
+  for(arr of mainArr) {
+    if(arr == testArr) return true;
+  }
+  return false;
 }
 
 const dayOne = () => {
@@ -56,49 +53,71 @@ const dayOne = () => {
   copyInput = copyInput.filter( (path) => !path.includes('start'))
 
   let searching = true;
-  // while(searching) {
-  for(let i = 0; i < 20; i++){
+  while(searching) {
+  // for(let i = 0; i < 1; i++){
+    searching = false;
     let copyPaths = Array.from(paths)
     //! look at paths, change copyPaths
     for(path in paths) {
       if(paths[path][-1] == 'end') continue;
       let nextStep = paths[path][paths[path].length - 1]
       let changed = false;
+      if(nextStep == 'end') continue;
       copyInput.map( (dir, i) => {
         if(dir.includes(nextStep) && changed){
           let newStep = (dir[0] == nextStep) ? dir[1] : dir[0]
           if(copyPaths.includes([...copyPaths[path], newStep])) return;
-          if(newStep.toUpperCase() == newStep){
+
+          //! adding new path if path is already updated
+          if(newStep.toUpperCase() !== newStep){;
             if(!paths[path].includes(newStep)){
               copyPaths.push([...copyPaths[path], newStep])
-              changed = true;
+              searching = true;
             }
           } else {
             copyPaths.push([...copyPaths[path], newStep])
-            changed = true;
+            searching = true;
           }
           nextStep = paths[path][paths[path].length - 1]
         }
+
+        //! updating current path before making new ones
         if(dir.includes(nextStep) && !changed){
           let newStep = (dir[0] == nextStep) ? dir[1] : dir[0]
-          if(newStep.toUpperCase() == newStep){
+          if(newStep.toUpperCase() !== newStep){
             if(!paths[path].includes(newStep)){
               copyPaths[path].push(newStep)
+              searching = true;
               changed = true;
             }
           } else {
             copyPaths[path].push(newStep)
+            searching = true;
             changed = true;
           }
           nextStep = paths[path][paths[path].length - 1]
         }
       })
-      console.log(copyPaths);
     }
+    // console.log(copyPaths);
 
-    paths = Array.from(paths)
-    searching = false
+    copyPaths = [...new Set(copyPaths)]
+    paths = JSON.parse(JSON.stringify(copyPaths))
+    
   }
+
+  let unique = [['a', 'b', 'c']];
+  let filteredArr = paths.filter( (path) => {
+    if (path[path.length - 1] == 'end'){
+      if(unique.includes(path)) return false;
+      unique.push(path)
+      return true;
+    }
+    return false;
+  })
+
+  console.log(filteredArr);
+  return console.log(filteredArr.length);
 }
 
 const dayTwo = () => {
@@ -107,3 +126,12 @@ const dayTwo = () => {
 
 dayOne();
 dayTwo()
+
+let mainArr = [
+  ['a', 'b', 'c'],
+  ['d', 'b', 'e'],
+  ['d', 'l', 'k'],
+]
+let testArr = ['a', 'b', 'c']
+
+console.log(isArrIncluded(testArr, mainArr));
