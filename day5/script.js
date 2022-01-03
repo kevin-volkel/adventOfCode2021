@@ -504,6 +504,7 @@ input = input.map((line) =>
   line.split(" -> ").map((coord) => coord.split(","))
 );
 
+
 const starOne = () => {
   let graphObj = {};
   copyInput = JSON.parse(JSON.stringify(input));
@@ -544,7 +545,7 @@ const starOne = () => {
     if (value > 1) collisions++;
   }
 
-  console.log(collisions);
+  console.log(graphObj);
   return graphObj;
 };
 
